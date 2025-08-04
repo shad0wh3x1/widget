@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greetings</title>
+
+    <style>
+        body{
+            font-family: monospace;
+            /* Đặt màu nền tối để chữ trắng dễ nhìn hơn */
+            background-color: #333;
+        }
+
+        .widget {
+            padding: 5px;
+            /* Đổi màu chữ thành trắng */
+            color: #ffffff; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            max-width: 95%;
+            margin: auto;
+            /* Đổi màu viền thành trắng */
+            border: 3px solid #ffffff; 
+            border-radius: 5px;
+            /* Đổi màu bóng đổ thành trắng */
+            box-shadow: 2px 2px 1px 0px #ffffff;
+        }
+
+        .greet {
+            font-size: 3em;
+            text-transform: capitalize;
+        }
+
+        .date {
+            font-size: 2em;
+            text-transform: capitalize;
+        }
+
+        .clock {
+            font-size: 2em;
+        }
+
+        .time {
+            display: inline-block;
+            min-width: 20px;
+        }
+
+        .colon {
+            font-size: 1em;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="widget">
+        <div class="greet" id="greet"></div>
+        <div class="date" id="date"></div>
+        <div class="clock">
+            <span class="time" id="hour"></span>
+            <span class="colon">:</span>
+            <span class="time" id="min"></span>
+            <span class="colon">:</span>
+            <span class="time" id="sec"></span>
+            <span class="time" id="ampm"></span>
+        </div>
+    </div>
+</div>
+
+<script>
+    function displayGreetings(today) {
+        const hrs = today.getHours();
+        let greet;
+        const name = "";
+        if (hrs < 12) {
+            greet = 'Good Morning ' + name;
+        } else if (hrs >= 12 && hrs <= 17) {
+            greet = 'Good Afternoon ' + name;
+        } else {
+            greet = 'Good Evening ' + name;
+        }
+        document.getElementById('greet').textContent = greet;
+    }
+
+    function displayDate(today) {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+        const dayName = days[today.getDay()];
+        const monthName = monthNames[today.getMonth()];
+        const date = today.getDate();
+        const year = today.getFullYear();
+        document.getElementById('date').textContent = `${dayName}, ${monthName} ${date} ${year}`;
+    }
+
+    function displayClock(today) {
+        let hours = today.getHours();
+        const minutes = padZeros(today.getMinutes());
+        const seconds = padZeros(today.getSeconds());
+        const ampm = hours >= 12 ? 'pm' : 'am';
+        
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        
+        document.getElementById('hour').textContent = padZeros(hours);
+        document.getElementById('min').textContent = minutes;
+        document.getElementById('sec').textContent = seconds;
+        document.getElementById('ampm').textContent = ampm;
+    }
+
+    function padZeros(num) {
+        return num < 10 ? '0' + num : num;
+    }
+
+    function updateWidget() {
+        const today = new Date();
+        displayGreetings(today);
+        displayDate(today);
+        displayClock(today);
+    }
+
+    setInterval(updateWidget, 1000);
+    updateWidget();
+</script>
+
+</body>
+</html>
